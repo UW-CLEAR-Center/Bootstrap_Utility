@@ -1,62 +1,41 @@
-ground truth
+usage: bootstrap_confidence_intervals.py [-h] [--col_name COL_NAME]
+                                         [--no_header] [-M SUBGROUP_SIZE]
+                                         [-N N_SUBGROUPS] [--alpha ALPHA]
+                                         input
 
-                 0
-count  1000.000000
-mean     -0.061761
-std       1.013841
-min      -3.319326
-25%      -0.718422
-50%      -0.029141
-75%       0.621898
-max       2.686124
+calculate the bootstrap mean, N groups of M
 
-blah.csv, 100 groups of 100, alpha 0.05
-using global mu
-mu±sterr: -0.0618±0.1065
- CI: -0.2705 0.1470
-traditional
-mu±sterr: -0.0612±0.1065
- CI: -0.2699 0.1476
-blah.csv, 1000 groups of 100, alpha 0.05
-using global mu
-mu±sterr: -0.0618±0.0979
- CI: -0.2536 0.1301
-traditional
-mu±sterr: -0.0569±0.0978
- CI: -0.2486 0.1347
-blah.csv, 10000 groups of 100, alpha 0.05
-using global mu
-mu±sterr: -0.0618±0.0964
- CI: -0.2507 0.1272
-traditional
-mu±sterr: -0.0628±0.0964
- CI: -0.2518 0.1262
-blah.csv, 100 groups of 500, alpha 0.05
-using global mu
-mu±sterr: -0.0618±0.0301
- CI: -0.1207 -0.0028
-traditional
-mu±sterr: -0.0614±0.0301
- CI: -0.1203 -0.0025
-blah.csv, 1000 groups of 500, alpha 0.05
-using global mu
-mu±sterr: -0.0618±0.0321
- CI: -0.1248 0.0012
-traditional
-mu±sterr: -0.0633±0.0321
- CI: -0.1263 -0.0004
-blah.csv, 10000 groups of 500, alpha 0.05
-using global mu
-mu±sterr: -0.0618±0.0319
- CI: -0.1244 0.0008
-traditional
-mu±sterr: -0.0617±0.0319
- CI: -0.1243 0.0009
-blah.csv, 2 groups of 1000, alpha 0.05
-using global mu
-mu±sterr: -0.0618±0.0000
- CI: -0.0618 -0.0618
-traditional
-mu±sterr: -0.0618±0.0000
- CI: -0.0618 -0.0618
+positional arguments:
+  input                 csv with data in columns
 
+optional arguments:
+  -h, --help            show this help message and exit
+  --col_name COL_NAME   name of the column to analyze. If unspecified uses the
+                        first column
+  --no_header           input does not have column names as first row
+  -M SUBGROUP_SIZE, --subgroup_size SUBGROUP_SIZE
+                        bootstrap subsample size
+  -N N_SUBGROUPS, --n_subgroups N_SUBGROUPS
+                        the number of subgroups to use
+  --alpha ALPHA         alpha to use for reporting
+rand1000.csv, 100 groups of 100, alpha 0.05
+mu±sterr: -0.0441±0.1168
+ CI: -0.2730 0.1848
+rand1000.csv, 1000 groups of 100, alpha 0.05
+mu±sterr: -0.0688±0.1006
+ CI: -0.2660 0.1284
+rand1000.csv, 10000 groups of 100, alpha 0.05
+mu±sterr: -0.0611±0.1010
+ CI: -0.2590 0.1369
+rand1000.csv, 100 groups of 500, alpha 0.05
+mu±sterr: -0.0652±0.0437
+ CI: -0.1508 0.0204
+rand1000.csv, 1000 groups of 500, alpha 0.05
+mu±sterr: -0.0623±0.0456
+ CI: -0.1517 0.0272
+rand1000.csv, 10000 groups of 500, alpha 0.05
+mu±sterr: -0.0616±0.0453
+ CI: -0.1504 0.0273
+rand1000.csv, 2 groups of 1000, alpha 0.05
+mu±sterr: -0.0458±0.0655
+ CI: -0.1742 0.0825

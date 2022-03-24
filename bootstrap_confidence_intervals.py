@@ -12,13 +12,14 @@
 
 import pandas as pd
 import numpy as np
-import argparse
 from scipy.stats import norm
+
 from random import gauss
 import os, datetime
 import sys
 import unittest
 import time
+import argparse
 
 class TestBootstrapCI(unittest.TestCase):
     col = pd.Series([gauss(0,1) for i in range(1000)])
@@ -70,15 +71,17 @@ class TestBootstrapCI(unittest.TestCase):
             os.remove(i)
 
 
-def bootstrap_sterr_of_mean(col, subgroup_size, n_subgroups):
+def bootstrap_sterr_of_mean(col, subgroup_size=None, n_subgroups=1000):
     # Calculate the mean and sterr of a pandas.Series
     # returns (global mean, sterr est using global mean, est mean, sterr est using est mean)
     # using the estimated mean values is standard practice 
     mu_bar = col.mean()
     mus = []
+    if not subgroup_size:
+        subgroup_size = col.shape[0]
 
     for i in range(n_subgroups):
-        sample = col.sample(subgroup_size)
+        sample = col.sample(subgroup_size, replace=True)
         mus.append(sample.mean())
     mus = pd.Series(mus)
     st_err_glob = np.sqrt(1/(n_subgroups-1) * (mus - mu_bar).pow(2).sum())
@@ -100,9 +103,9 @@ def parse_args(args=sys.argv[:1]):
     parser.add_argument('--no_header', 
         help='input does not have column names as first row', action='store_true')
     parser.add_argument('-M', '--subgroup_size', type=int,
-        help='bootstrap subsample size')
+        help='bootstrap subsample size', default=None)
     parser.add_argument('-N', '--n_subgroups', type=int,
-        help='the number of subgroups to use')
+        help='the number of subgroups to use', default=1000)
     parser.add_argument('--alpha', default=0.05, type=float,
         help='alpha to use for reporting')
     return parser.parse_args(args)
@@ -143,10 +146,13 @@ def main():
 
     mu_bar, st_err_glob, avg_avg, st_err = bootstrap_sterr_of_mean(col, subgroup_size, n_subgroups)
     
+    if not subgroup_size:
+        subgroup_size = col.shape[0]
+    
     print("{}, {} groups of {}, alpha {}".format(args.input,n_subgroups,subgroup_size, args.alpha))
-    print("\nusing global mu")
-    report_CI(mu_bar, st_err_glob, args.alpha)
-    print("\ntraditional")
+    #print("\nusing global mu")
+    #report_CI(mu_bar, st_err_glob, args.alpha)
+    #print("\ntraditional")  # use only the traditional formula
     report_CI(avg_avg, st_err, args.alpha)
     
 
